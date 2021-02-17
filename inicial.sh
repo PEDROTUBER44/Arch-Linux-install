@@ -1,7 +1,4 @@
-sudo rm /var/lib/dpkg/lock-frontend ; 
-sudo rm /var/cache/apt/archives/lock ;
-sudo apt update ;
-sudo apt upgrade -y ;
+sudo pacman -Syu ;
 
 loadkeys br-abnt2 ;
 fdisk -l /dev/sda ;
@@ -32,4 +29,18 @@ ln -sf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime ;
 hwclock --systohc ;
 pacman -S nano ;
 nano /etc/locale.gen ;
-locale-gen
+locale-gen ;
+echo LANG=pt_BR.UTF-8 >> /etc/locale.conf ;
+echo KEYMAP=br-abnt2 >> /etc/vconsole.conf ;
+useradd -m -g users -G wheel pedro ;
+passwd ;
+passwd pedro ;
+pacman -S dosfstools os-prober mtools network-manager-applet networkmanager wpa_supplicant wireless_tools dialog sudo -y ;
+nano /etc/sudoers ;
+usermod -d /home/pedro -m pedro ;
+pacman -S grub-efi-x86_64 efibootmgr ;
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch_grub --recheck ;
+cp /usr/share/locale/en@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo ;
+grub-mkconfig -o /boot/grub/grub.cfg ;
+exit ;
+reboot ;
